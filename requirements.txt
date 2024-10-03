@@ -1,6 +1,4 @@
 streamlit==1.24.0
 pandas==2.1.1
 matplotlib==3.8.0
-sqlite3==0.0.1  # sqlite3 comes with Python, no need to install
-queue==0.1.0    # Queue is part of Python's standard library; not necessary to install but added for compatibility
-numpy==1.26.0
+sqlite3==0.0.1
