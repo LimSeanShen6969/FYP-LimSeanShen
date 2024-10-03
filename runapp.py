@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
-import matplotlib.pyplot as plt
 import random
 import time
 from datetime import datetime, timedelta
@@ -32,6 +31,7 @@ class PostOfficeQueueSystem:
         self.counters = counters
         self.customers_served = 0
         self.total_wait_time = 0
+        self.db_name = db_name
         self.create_db()
 
     def create_db(self):
@@ -52,7 +52,7 @@ class PostOfficeQueueSystem:
 
     def add_customer(self, customer):
         # Save the customer to the database
-        conn = sqlite3.connect("post_office_queue.db")
+        conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         c.execute("""
             INSERT INTO queue_records (customer_id, purpose, estimated_time, wait_time, counter_no, queue_in_time, queue_out_time)
@@ -105,6 +105,17 @@ def visualize_data():
     st.line_chart(average_wait_time)
 
 
+def export_data_to_csv():
+    conn = sqlite3.connect("post_office_queue.db")
+    query = "SELECT * FROM queue_records"
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+
+    # Save to CSV
+    df.to_csv('queue_records.csv', index=False)
+    return 'queue_records.csv'
+
+
 def simulate_post_office(counters, total_customers):
     post_office = PostOfficeQueueSystem(counters)
     post_office.process_queue(total_customers)
@@ -122,3 +133,8 @@ if st.button('Start Simulation'):
     st.write(f"Simulating with {counters} counters and {total_customers} customers...")
     simulate_post_office(counters, total_customers)
     st.success('Simulation complete!')
+
+# Button to export data to CSV
+if st.button('Export Data to CSV'):
+    csv_file = export_data_to_csv()
+    st.success(f'Data exported to {csv_file}')
