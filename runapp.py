@@ -86,6 +86,4 @@ if st.sidebar.button("Run Optimization"):
     else:
         st.error("Unable to find a feasible solution. Please adjust the parameters.")
 
-# Display the original queue data
-st.header("Queue Data")
-st.write(df)
+
