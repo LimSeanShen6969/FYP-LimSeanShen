@@ -3,6 +3,23 @@ import pandas as pd
 import sqlite3
 import pulp as lp
 
+
+def initialize_database():
+    conn = sqlite3.connect('post_office_queue.db')
+    cursor = conn.cursor()
+    # Check if table exists, and create if it doesn't
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS queue_records (
+            queue_in_time TIMESTAMP,
+            queue_out_time TIMESTAMP,
+            wait_time INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Call this function once before loading data
+initialize_database()
 @st.cache_data
 def load_data():
     conn = sqlite3.connect('post_office_queue.db')
