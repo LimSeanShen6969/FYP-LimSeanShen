@@ -59,7 +59,7 @@ if st.sidebar.button("Run Optimization"):
     optimal_counters, optimal_wait_time, total_cost = solve_lp_model(
         base_wait_time, max_avg_wait_time, budget, cost_per_counter
     )
-    
+
     # Display results
     if optimal_counters is not None:
         st.success(f"Optimal number of counters: {int(optimal_counters)}")
