@@ -3,13 +3,14 @@ import pandas as pd
 import sqlite3
 import pulp as lp
 
-# Connect to SQLite database
+@st.cache_data
 def load_data():
     conn = sqlite3.connect('post_office_queue.db')
     query = "SELECT queue_in_time, queue_out_time, wait_time FROM queue_records"
     df = pd.read_sql_query(query, conn)
     conn.close()
     return df
+
 
 # Function to solve LP problem based on user input
 def solve_lp_model(base_wait_time, max_avg_wait_time, budget, cost_per_counter):
